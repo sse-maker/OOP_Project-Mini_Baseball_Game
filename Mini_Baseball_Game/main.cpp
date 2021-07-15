@@ -6,8 +6,7 @@
 //
 
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
+#include <random>
 
 using namespace std;
 
@@ -43,7 +42,6 @@ private:
 };
 
 int main() {
-    srand((unsigned int)time(NULL));
     Game menu;
     menu.Print_Menu();
     menu.Select_Menu();
@@ -104,7 +102,7 @@ void Menu::Print_Info() {
         cout << "2. The player can swing or skip the ball." << '\n' << endl;
         cout << "3. If you 'Hit' or 'Base on Balls', you can get on the base." << '\n' << endl;
         cout << "4. There are no outs by runners, only flyouts and strikeouts." << '\n' << endl;
-        cout << "5. If you score more than 10 points in the third inning, you will win the game." << '\n' << endl;
+        cout << "5. If you score more than 5 points in the third inning, you will win the game." << '\n' << endl;
             
         for(int i = 0; i < 80; i++) { cout << "-"; }
         cout << '\n' << "Back to main menu(-1): "; cin >> num;
@@ -216,8 +214,10 @@ void Game::Print_Base() {
 
 void Game::Get_Swing_Result() {
     system("clear");
-    srand((unsigned int)time(NULL));
-    int swing_random = rand() % 100;
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> dis(0, 100);
+    int swing_random = dis(gen);
     
     if(0 <= swing_random && swing_random < 14) {
         cout << "Single!" << endl;
@@ -456,8 +456,10 @@ void Game::Get_Swing_Result() {
 
 void Game::Get_Pass_Result() {
     system("clear");
-    srand((unsigned int)time(NULL));
-    int pass_random = rand() % 100;
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> dis(0, 100);
+    int pass_random = dis(gen);
     
     if(0 <= pass_random && pass_random < 65) {
         cout << "Ball" << endl;
@@ -501,7 +503,7 @@ void Game::Game_Result() {
     Draw_Line();
     cout << endl;
     Print_Score();
-    if(firstscore + secondscore + thirdscore < 10) { cout << "Result: Player lose" << endl; }
+    if(firstscore + secondscore + thirdscore < 5) { cout << "Result: Player lose" << endl; }
     else { cout << "Result: Player win!" << endl; }
     cout << "Go to main menu(-1): "; cin >> num;
     if(num == -1) {
